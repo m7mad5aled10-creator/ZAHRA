@@ -2,7 +2,7 @@
   "name": "استلامات مساحة زهرة",
   "short_name": "مساحة زهرة",
   "description": "فورم إدخال استلامات مساحة مشروع زهرة",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0f172a",

@@ -176,7 +176,7 @@ body{font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;direction:rtl;
 </div>
 <div class="search-body">
   <div class="search-box">
-    <input id="search-emara" type="number" inputmode="numeric" placeholder="ادخل رقم العمارة..." onkeydown="if(event.key==='Enter')doSearch()"/>
+    <input id="search-emara" type="text" placeholder="ادخل رقم العمارة..." onkeydown="if(event.key==='Enter')doSearch()"/>
     <button class="btn-search" id="search-btn" onclick="doSearch()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
       <span id="search-btn-lbl">بحث</span>
@@ -217,10 +217,10 @@ body{font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;direction:rtl;
       <div class="g3">
         <div class="f"><label><span class="req">* </span>تاريخ الطلب</label><input id="req-date" type="date"/></div>
         <div class="f"><label><span class="req">* </span>ZONE</label>
-          <select id="zone-select" onchange="onCombo('zone')"><option value="">اختار...</option><option>Z4</option><option>Z5</option><option>Z6</option><option>Z8</option><option>Z9</option><option>Z16</option><option>COASTAL</option><option>GENERAL</option><option>AKTI</option><option value="__new__">+ جديدة...</option></select>
+          <select id="zone-select" onchange="onCombo('zone')"><option value="">اختار...</option><option>Z1</option><option>Z4</option><option>Z5</option><option>Z6</option><option>Z8</option><option>Z9</option><option>Z16</option><option>COASTAL</option><option>GENERAL</option><option>AKTI</option><option value="__new__">+ جديدة...</option></select>
         </div>
         <div class="f"><label><span class="req">* </span>المقاول</label>
-          <select id="contractor-select" onchange="onCombo('contractor')"><option value="">اختار...</option><option>SCAD</option><option>MORSHEDY</option><option>CRC</option><option>KAYAN</option><option>CORE</option><option>المتحدان</option><option>العمدة</option><option value="__new__">+ جديد...</option></select>
+          <select id="contractor-select" onchange="onCombo('contractor')"><option value="">اختار...</option><option>SCAD</option><option>MORSHEDY</option><option>CRC</option><option>KAYAN</option><option>CORE</option><option>المتحدان</option><option>العمدة</option><option>شركة الاولى</option><option value="__new__">+ جديد...</option></select>
         </div>
       </div>
       <div class="combo-row" id="zone-custom-row" style="display:none"><input id="zone-custom" type="text" placeholder="اكتب ZONE جديدة..."/><button class="combo-cancel" onclick="cancelCombo('zone')">✕</button></div>
@@ -245,7 +245,7 @@ body{font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;direction:rtl;
         </div>
       </div>
       <div class="f"><label><span class="req">* </span>البند</label>
-        <select id="band-select" onchange="onBand()"><option value="">اختار...</option><option>اكسات اعمدة</option><option>اكسات ووزنات سقف</option><option>شرب متر من التشطيب</option><option>منسوب سلم</option><option>SOG منسوب ردم</option><option>منسوب التاسيس</option><option>منسوب احلال</option><option>قواعد عادية</option><option>قواعد مسلحة</option><option>سقف</option><option>اعمدة</option><option>سلم</option><option>بند آخر...</option></select>
+        <select id="band-select" onchange="onBand()"><option value="">اختار...</option><option>اكسات اعمدة</option><option>اكسات ووزنات سقف</option><option>شرب متر من التشطيب</option><option>منسوب سلم</option><option>SOG منسوب ردم</option><option>منسوب التاسيس</option><option>منسوب احلال</option><option>قواعد عادية</option><option>قواعد مسلحة</option><option>سقف</option><option>اعمدة</option><option>سلم</option><option>حدائق العملاء</option><option>كمرة</option><option>سملات</option><option>حماية العزل</option><option>بند آخر...</option></select>
         <div id="band-custom-wrap" style="display:none;margin-top:6px"><input id="band-custom" type="text" placeholder="اكتب البند..." style="width:100%;padding:10px 11px;font-size:14px;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;color:#0f172a;outline:none;font-family:-apple-system,sans-serif;-webkit-appearance:none"/></div>
       </div>
       <div class="g2">

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="مساحة زهرة"/>
+<meta name="theme-color" content="#0f172a"/>
+<link rel="manifest" href="manifest.json"/>
+<title>مساحة زهرة</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;direction:rtl;background:#f1f5f9;color:#0f172a;font-size:16px}
+.screen{display:none}.screen.active{display:block}
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;background:#0f172a}
+.login-logo{width:72px;height:72px;border-radius:20px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem}
+.login-logo svg{width:36px;height:36px;color:#4ade80}
+.login-title{font-size:24px;font-weight:700;color:#f8fafc;margin-bottom:6px;text-align:center}
+.login-sub{font-size:14px;color:#64748b;text-align:center;margin-bottom:2.5rem}
+.login-card{width:100%;max-width:360px;background:#1e293b;border-radius:20px;padding:2rem;border:1px solid #334155}
+.login-card h2{font-size:18px;font-weight:700;color:#f8fafc;margin-bottom:6px}
+.login-card p{font-size:13px;color:#64748b;margin-bottom:1.5rem}
+.btn-google{width:100%;padding:14px;border-radius:12px;border:1px solid #334155;background:#fff;color:#0f172a;font-size:15px;font-weight:700;font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}
+.login-err{font-size:13px;color:#f87171;margin-top:12px;text-align:center;display:none}
+/* HERO */
+.hero{background:#0f172a;padding:1rem;position:sticky;top:0;z-index:10}
+.hero-inner{display:flex;align-items:center;justify-content:space-between}
+.hero-left h1{font-size:17px;font-weight:700;color:#f8fafc;margin-bottom:1px}
+.hero-left p{font-size:11px;color:#94a3b8}
+.hero-right{display:flex;align-items:center;gap:8px}
+.user-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid #334155}
+.user-avatar-placeholder{width:32px;height:32px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#94a3b8}
+.badge-live{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(74,222,128,.3);margin-top:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 1.5s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.btn-logout{background:none;border:1px solid #334155;color:#64748b;font-size:11px;padding:5px 10px;border-radius:8px;cursor:pointer;font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif}
+.hero-back{background:none;border:none;color:#94a3b8;font-size:13px;font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px;padding:0}
+.hero-back svg{width:16px;height:16px}
+/* HOME */
+.home-body{padding:1.5rem 1rem;padding-bottom:2rem}
+.home-welcome{font-size:15px;color:#64748b;margin-bottom:4px}
+.home-name{font-size:22px;font-weight:700;color:#0f172a;margin-bottom:1.5rem}
+.home-cards{display:flex;flex-direction:column;gap:14px}
+.home-card{background:#fff;border-radius:16px;border:1.5px solid #e2e8f0;padding:1.25rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:16px}
+.home-card:active{transform:scale(.98)}
+.home-card.blue{border-color:#bfdbfe}.home-card.green{border-color:#bbf7d0}.home-card.purple{border-color:#ddd6fe}
+.home-card-icon{width:52px;height:52px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.home-card.blue .home-card-icon{background:#dbeafe}.home-card.green .home-card-icon{background:#dcfce7}.home-card.purple .home-card-icon{background:#ede9fe}
+.home-card-icon svg{width:26px;height:26px}
+.home-card.blue .home-card-icon svg{color:#2563eb}.home-card.green .home-card-icon svg{color:#16a34a}.home-card.purple .home-card-icon svg{color:#7c3aed}
+.home-card-text h3{font-size:16px;font-weight:700;color:#0f172a;margin-bottom:3px}
+.home-card-text p{font-size:12px;color:#64748b}
+.home-card-arrow{margin-right:auto;color:#cbd5e1;flex-shrink:0}
+.home-card-arrow svg{width:18px;height:18px}
+/* FORM */
+.form-body{padding:1rem;padding-bottom:7rem}
+.type-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;margin-top:6px}
+.type-badge.a1{background:rgba(37,99,235,.15);color:#93c5fd;border:1px solid rgba(147,197,253,.3)}
+.type-badge.a2{background:rgba(22,163,74,.15);color:#86efac;border:1px solid rgba(134,239,172,.3)}
+.section-card{background:#fff;border-radius:16px;margin-bottom:1rem;border:1px solid #e2e8f0;overflow:hidden}
+.section-header{display:flex;align-items:center;gap:10px;padding:12px 1rem;border-bottom:1px solid #f1f5f9}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.si-blue{background:#dbeafe}.si-blue svg{color:#2563eb}
+.si-green{background:#dcfce7}.si-green svg{color:#16a34a}
+.si-purple{background:#ede9fe}.si-purple svg{color:#7c3aed}
+.section-icon svg{width:16px;height:16px}
+.section-title{font-size:14px;font-weight:700;color:#0f172a}
+.section-sub{font-size:11px;color:#94a3b8;margin-top:1px}
+.section-body{padding:1rem;display:flex;flex-direction:column;gap:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:12px;font-weight:700;color:#475569}
+.req{color:#ef4444}
+.f input,.f select,.f textarea{width:100%;padding:10px 11px;font-size:14px;font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;color:#0f172a;outline:none;transition:all .15s;-webkit-appearance:none;appearance:none}
+.f input:focus,.f select:focus,.f textarea:focus{background:#fff;border-color:#0f172a;box-shadow:0 0 0 3px rgba(15,23,42,.07)}
+.f textarea{resize:vertical;min-height:80px;line-height:1.7}
+.f select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 10px center;padding-left:28px}
+.combo-row{display:flex;gap:6px;align-items:center;margin-top:6px}
+.combo-row input{flex:1;padding:9px 11px;font-size:14px;font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;border:1.5px solid #2563eb;border-radius:10px;background:#eff6ff;color:#0f172a;outline:none;-webkit-appearance:none;appearance:none}
+.combo-cancel{padding:8px 12px;border-radius:8px;border:1px solid #e2e8f0;background:#f8fafc;color:#94a3b8;font-size:13px;cursor:pointer}
+.combo-hint{font-size:11px;color:#2563eb;font-weight:600;margin-top:2px;display:none}
+.combo-hint.show{display:block}
+.status-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sbtn{padding:11px 8px;border-radius:10px;border:1.5px solid #e2e8f0;font-size:13px;font-weight:700;cursor:pointer;background:#f8fafc;color:#64748b;transition:all .15s;text-align:center;font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif}
+.sbtn small{display:block;font-size:10px;font-weight:500;margin-top:2px;opacity:.65}
+.sbtn.on-A{background:#dcfce7;border-color:#16a34a;color:#15803d;border-width:2px}
+.sbtn.on-B{background:#dbeafe;border-color:#2563eb;color:#1d4ed8;border-width:2px}
+.sbtn.on-C{background:#fef9c3;border-color:#ca8a04;color:#a16207;border-width:2px}
+.sbtn.on-D{background:#fee2e2;border-color:#dc2626;color:#b91c1c;border-width:2px}
+.f textarea.rh{border-color:#ef4444;background:#fff5f5}
+.notes-hint{font-size:11px;color:#ef4444;font-weight:600;display:none;margin-top:2px}
+.notes-hint.show{display:block}
+.concrete-field{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:12px;padding:.75rem 1rem;display:flex;align-items:center;gap:10px}
+.concrete-field input{flex:1;border:none;background:transparent;font-size:18px;font-weight:700;color:#15803d;outline:none;font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;-webkit-appearance:none;appearance:none}
+.concrete-field span{font-size:13px;font-weight:700;color:#16a34a;white-space:nowrap}
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e2e8f0;padding:.75rem 1rem;display:flex;gap:8px;box-shadow:0 -4px 16px rgba(0,0,0,.06)}
+.btn-submit{flex:2;padding:14px;border-radius:12px;border:none;background:#0f172a;color:#fff;font-size:15px;font-weight:700;font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-submit:active{opacity:.85}.btn-submit.loading{opacity:.5;pointer-events:none}
+.btn-clear{flex:1;padding:14px;border-radius:12px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;font-size:14px;font-weight:600;font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;cursor:pointer}
+.banner{border-radius:12px;padding:13px 16px;font-size:14px;font-weight:600;margin-bottom:1rem;display:none;align-items:center;gap:10px}
+.banner.ok{background:#dcfce7;color:#15803d;border:1.5px solid #86efac}
+.banner.err{background:#fee2e2;color:#b91c1c;border:1.5px solid #fca5a5}
+.spinner{width:17px;height:17px;border:2.5px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* SEARCH */
+.search-body{padding:1rem;padding-bottom:3rem}
+.search-box{display:flex;gap:8px;margin-bottom:1.25rem}
+.search-box input{flex:1;padding:12px 14px;font-size:16px;font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;border:1.5px solid #e2e8f0;border-radius:12px;background:#fff;color:#0f172a;outline:none;-webkit-appearance:none;appearance:none}
+.search-box input:focus{border-color:#0f172a;box-shadow:0 0 0 3px rgba(15,23,42,.07)}
+.btn-search{padding:12px 20px;border-radius:12px;border:none;background:#0f172a;color:#fff;font-size:14px;font-weight:700;font-family:-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.btn-search.loading{opacity:.5;pointer-events:none}
+.search-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.results-count{font-size:13px;color:#64748b;margin-bottom:12px;font-weight:500}
+.result-card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;padding:1rem;margin-bottom:10px;overflow:hidden}
+.result-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #f1f5f9}
+.result-sheet{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:#f1f5f9;color:#64748b}
+.result-type{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.result-type.t1{background:#dbeafe;color:#1d4ed8}
+.result-type.t2{background:#dcfce7;color:#15803d}
+.result-status{font-size:12px;font-weight:700;padding:4px 10px;border-radius:8px}
+.rs-A{background:#dcfce7;color:#15803d}
+.rs-B{background:#dbeafe;color:#1d4ed8}
+.rs-C{background:#fef9c3;color:#a16207}
+.rs-D{background:#fee2e2;color:#b91c1c}
+.result-rows{display:flex;flex-direction:column;gap:6px}
+.result-row{display:flex;justify-content:space-between;font-size:13px}
+.result-row .lbl{color:#64748b;flex-shrink:0}
+.result-row .val{color:#0f172a;font-weight:500;text-align:left;word-break:break-word;max-width:65%}
+.no-results{text-align:center;padding:3rem 1rem;color:#94a3b8;font-size:14px}
+.no-results svg{width:48px;height:48px;margin-bottom:12px;opacity:.3}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="screen-home" class="screen active">
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left"><h1>مساحة زهرة</h1><p>اختار نوع الطلب للبدء</p><div class="badge-live"><div class="dot"></div>مرتبط بـ Google Sheets</div></div>
+  </div>
+</div>
+<div class="home-body">
+  <div class="home-welcome">أهلاً،</div>
+  <div class="home-name" id="user-name">مستخدم النظام</div>
+  <div class="home-cards">
+    <div class="home-card blue" onclick="goToForm('1')">
+      <div class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M20 12V6a2 2 0 00-2-2H6a2 2 0 00-2 2v14a2 2 0 002 2h6"/><path d="M16 19h6M19 16v6"/></svg></div>
+      <div class="home-card-text"><h3>طلب استلام أعمال</h3><p>تسجيل استلام أعمال المساحة من المقاول</p></div>
+      <div class="home-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></div>
+    </div>
+    <div class="home-card green" onclick="goToForm('2')">
+      <div class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <div class="home-card-text"><h3>إذن صب</h3><p>تسجيل إذن صب الخرسانة</p></div>
+      <div class="home-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></div>
+    </div>
+    <div class="home-card purple" onclick="goToSearch()">
+      <div class="home-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+      <div class="home-card-text"><h3>استعلام عن عمارة</h3><p>ابحث برقم العمارة لعرض كل طلباتها</p></div>
+      <div class="home-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SEARCH -->
+<div id="screen-search" class="screen">
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left"><h1>استعلام عن عمارة</h1><p>البحث في كل الشهور</p><div class="badge-live"><div class="dot"></div>مرتبط بـ Google Sheets</div></div>
+    <button class="hero-back" onclick="goHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>رجوع</button>
+  </div>
+</div>
+<div class="search-body">
+  <div class="search-box">
+    <input id="search-emara" type="text" placeholder="ادخل رقم العمارة..." onkeydown="if(event.key==='Enter')doSearch()"/>
+    <button class="btn-search" id="search-btn" onclick="doSearch()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span id="search-btn-lbl">بحث</span>
+      <div class="search-spinner" id="search-spinner"></div>
+    </button>
+  </div>
+  <div id="results-count" class="results-count" style="display:none"></div>
+  <div id="results-wrap"></div>
+</div>
+</div>
+
+<!-- FORM -->
+<div id="screen-form" class="screen">
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <h1 id="form-title">طلب استلام أعمال</h1>
+      <p id="form-user-name" style="color:#94a3b8;font-size:11px">مستخدم النظام</p>
+      <div class="type-badge a1" id="type-badge">طلب استلام</div>
+    </div>
+    <button class="hero-back" onclick="goHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>رجوع</button>
+  </div>
+</div>
+<div class="form-body">
+  <div class="banner ok" id="res-ok"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8l3.5 3.5L13 4.5"/></svg>تم الإضافة في الشيت بنجاح!</div>
+  <div class="banner err" id="res-err"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v4M8 11v1"/></svg><span id="err-txt"></span></div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon si-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+      <div><div class="section-title">بيانات الطلب</div><div class="section-sub">رقم الطلب · الإصدار · التاريخ · ZONE · المقاول</div></div>
+    </div>
+    <div class="section-body">
+      <div class="g2">
+        <div class="f"><label><span class="req">* </span>رقم الطلب</label><input id="req-num" type="number" inputmode="numeric" placeholder="1409"/></div>
+        <div class="f"><label>الإصدار</label><select id="revision"><option>REV 0</option><option>REV 1</option><option>REV 2</option><option>REV 3</option></select></div>
+      </div>
+      <div class="g2">
+        <div class="f"><label><span class="req">* </span>تاريخ الطلب</label><input id="req-date" type="date"/></div>
+        <div class="f"><label><span class="req">* </span>ZONE</label>
+          <select id="zone-select" onchange="onCombo('zone')"><option value="">اختار...</option><option>Z1</option><option>Z4</option><option>Z5</option><option>Z6</option><option>Z8</option><option>Z9</option><option>Z16</option><option>COASTAL</option><option>GENERAL</option><option>AKTI</option><option value="__new__">+ جديدة...</option></select>
+        </div>
+      </div>
+      <div class="f"><label><span class="req">* </span>المقاول</label>
+        <select id="contractor-select" onchange="onCombo('contractor')"><option value="">اختار...</option><option>SCAD</option><option>MORSHEDY</option><option>CRC</option><option>KAYAN</option><option>CORE</option><option>المتحدان</option><option>العمدة</option><option>شركة الاولى</option><option value="__new__">+ جديد...</option></select>
+      </div>
+      <div class="combo-row" id="zone-custom-row" style="display:none"><input id="zone-custom" type="text" placeholder="اكتب ZONE جديدة..."/><button class="combo-cancel" onclick="cancelCombo('zone')">✕</button></div>
+      <span class="combo-hint" id="zone-hint">اكتب اسم الـ ZONE الجديدة</span>
+      <div class="combo-row" id="contractor-custom-row" style="display:none"><input id="contractor-custom" type="text" placeholder="اكتب اسم المقاول..."/><button class="combo-cancel" onclick="cancelCombo('contractor')">✕</button></div>
+      <span class="combo-hint" id="contractor-hint">اكتب اسم المقاول الجديد</span>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon si-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20M6 20V10l6-6 6 6v10"/><path d="M10 20v-5h4v5"/></svg></div>
+      <div><div class="section-title">بيانات العمل</div><div class="section-sub" id="section2-sub">العمارة · البند · الدور · الاستلام · الحالة</div></div>
+    </div>
+    <div class="section-body">
+      <div class="g2">
+        <div class="f"><label><span class="req">* </span>رقم العمارة</label><input id="emara" type="TEXT"  placeholder="318"/></div>
+        <div class="f"><label>الدور</label>
+          <select id="floor-select" onchange="onCombo('floor')"><option value="">اختار...</option><option>الأرضي</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>السطح</option><option>السطح العلوي</option><option>أساسات</option><option>ردم</option><option>حفر</option><option value="__new__">+ جديد...</option></select>
+          <div class="combo-row" id="floor-custom-row" style="display:none"><input id="floor-custom" type="text" placeholder="اكتب الدور..."/><button class="combo-cancel" onclick="cancelCombo('floor')">✕</button></div>
+          <span class="combo-hint" id="floor-hint">اكتب الدور يدوياً</span>
+        </div>
+      </div>
+      <div class="f"><label><span class="req">* </span>البند</label>
+        <select id="band-select" onchange="onBand()"><option value="">اختار...</option><option>اكسات اعمدة</option><option>اكسات ووزنات سقف</option><option>شرب متر من التشطيب</option><option>منسوب سلم</option><option>SOG منسوب ردم</option><option>منسوب التاسيس</option><option>منسوب احلال</option><option>قواعد عادية</option><option>قواعد مسلحة</option><option>سقف</option><option>اعمدة</option><option>سلم</option><option>حدائق العملاء</option><option>كمرة</option><option>سملات</option><option>حماية العزل</option><option>بند آخر...</option></select>
+        <div id="band-custom-wrap" style="display:none;margin-top:6px"><input id="band-custom" type="text" placeholder="اكتب البند..." style="width:100%;padding:10px 11px;font-size:14px;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;color:#0f172a;outline:none;font-family:-apple-system,sans-serif;-webkit-appearance:none"/></div>
+      </div>
+      <div class="g2">
+        <div class="f"><label>المستلم</label><input id="receiver" type="text" placeholder="اسم المستلم"/></div>
+        <div class="f"><label>تاريخ الاستلام</label><input id="recv-date" type="date"/></div>
+      </div>
+      <div id="status-section">
+        <div class="f"><label>الحالة</label>
+          <div class="status-grid">
+            <button class="sbtn" id="btn-A" onclick="setStatus('A')">معتمد<small>A</small></button>
+            <button class="sbtn" id="btn-B" onclick="setStatus('B')">معتمد بشروط<small>B</small></button>
+            <button class="sbtn" id="btn-C" onclick="setStatus('C')">يعاد تقديمه<small>C</small></button>
+            <button class="sbtn" id="btn-D" onclick="setStatus('D')">مرفوض<small>D</small></button>
+          </div>
+        </div>
+      </div>
+      <div id="concrete-section" style="display:none">
+        <div class="f"><label><span class="req">* </span>كمية الخرسانة</label>
+          <div class="concrete-field"><input id="concrete" type="number" inputmode="decimal" placeholder="0.00"/><span>م³</span></div>
+        </div>
+      </div>
+      <div class="f"><label id="notes-label">ملاحظات</label><textarea id="notes" placeholder="أي ملاحظات إضافية..." oninput="onNotesInput()"></textarea><span class="notes-hint" id="notes-hint">الملاحظات إجبارية عند اختيار هذه الحالة</span></div>
+    </div>
+  </div>
+</div>
+<div class="bottom-bar">
+  <button class="btn-clear" onclick="clearForm()">مسح</button>
+  <button class="btn-submit" id="send-btn" onclick="submitForm()">
+    <span id="btn-lbl">إضافة في الشيت</span>
+    <svg id="btn-ico" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+    <div class="spinner" id="spinner"></div>
+  </button>
+</div>
+</div>
+
+<script>
+const WEB_APP_URL='https://script.google.com/macros/s/AKfycbwzXYLtmCdsCAA8_UKjxRcRFyII0ZwepNK01rBdLpMFSOWlPMZFIv9QB750qkeMyw6VKg/exec';
+let sel='',formType='1',currentUser={displayName:'مستخدم النظام'};
+const lbs={A:'معتمد',B:'معتمد بشروط',C:'يعاد تقديمه',D:'مرفوض'};
+const needsNotes=['C','D'];
+
+function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+n).classList.add('active');}
+
+function goToForm(type){
+  formType=type;showScreen('form');
+  const isE=type==='1';
+  document.getElementById('form-user-name').textContent=currentUser.displayName;
+  document.getElementById('form-title').textContent=isE?'طلب استلام أعمال':'إذن صب';
+  const badge=document.getElementById('type-badge');badge.textContent=isE?'طلب استلام':'إذن صب';badge.className='type-badge '+(isE?'a1':'a2');
+  document.getElementById('status-section').style.display=isE?'block':'none';
+  document.getElementById('concrete-section').style.display=isE?'none':'block';
+  document.getElementById('section2-sub').textContent=isE?'العمارة · البند · الدور · الاستلام · الحالة':'العمارة · البند · الدور · الاستلام · الكمية';
+  const t=new Date();document.getElementById('req-date').value=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+  clearStatus();window.scrollTo({top:0});
+}
+
+function goToSearch(){showScreen('search');document.getElementById('search-emara').value='';document.getElementById('results-wrap').innerHTML='';document.getElementById('results-count').style.display='none';window.scrollTo({top:0});}
+function goHome(){showScreen('home');clearForm();window.scrollTo({top:0});}
+function fmtDate(v){if(!v)return'';const p=v.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:v;}
+
+// SEARCH
+async function doSearch(){
+  const emara=document.getElementById('search-emara').value.trim();
+  if(!emara)return;
+  const btn=document.getElementById('search-btn');
+  const lbl=document.getElementById('search-btn-lbl');
+  const sp=document.getElementById('search-spinner');
+  btn.classList.add('loading');lbl.textContent='جاري البحث...';sp.style.display='block';
+  document.getElementById('results-wrap').innerHTML='';
+  document.getElementById('results-count').style.display='none';
+  try{
+    const url=WEB_APP_URL+'?action=search&emara='+encodeURIComponent(emara);
+    const res=await fetch(url);
+    const data=await res.json();
+    btn.classList.remove('loading');lbl.textContent='بحث';sp.style.display='none';
+    if(data.status==='ok'){renderResults(data.results,emara);}
+    else{document.getElementById('results-wrap').innerHTML='<div class="no-results"><p>حصل خطأ في البحث</p></div>';}
+  }catch(e){
+    btn.classList.remove('loading');lbl.textContent='بحث';sp.style.display='none';
+    document.getElementById('results-wrap').innerHTML='<div class="no-results"><p>فشل الاتصال — تأكد من الانترنت</p></div>';
+  }
+}
+
+function renderResults(results,emara){
+  const countEl=document.getElementById('results-count');
+  const wrap=document.getElementById('results-wrap');
+  if(!results||results.length===0){
+    countEl.style.display='none';
+    wrap.innerHTML=`<div class="no-results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><p>مفيش طلبات لعمارة ${emara}</p></div>`;
+    return;
+  }
+  countEl.style.display='block';
+  countEl.textContent=`${results.length} طلب لعمارة ${emara} في ${[...new Set(results.map(r=>r.sheet))].length} شهر`;
+  const statusColors={A:'rs-A',B:'rs-B',C:'rs-C',D:'rs-D'};
+  const statusLabels={A:'معتمد',B:'معتمد بشروط',C:'يعاد تقديمه',D:'مرفوض'};
+  wrap.innerHTML=results.map(r=>`
+    <div class="result-card">
+      <div class="result-card-header">
+        <span class="result-sheet">${r.sheet}</span>
+        <span class="result-type ${r.type==='طلب استلام'?'t1':'t2'}">${r.type||'—'}</span>
+        ${r.status?`<span class="result-status ${statusColors[r.status]||''}">${statusLabels[r.status]||r.status}</span>`:''}
+      </div>
+      <div class="result-rows">
+        <div class="result-row"><span class="lbl">رقم الطلب</span><span class="val">${r.reqNum||'—'} / ${r.revision||''}</span></div>
+        <div class="result-row"><span class="lbl">ZONE</span><span class="val">${r.zone||'—'}</span></div>
+        <div class="result-row"><span class="lbl">المقاول</span><span class="val">${r.contractor||'—'}</span></div>
+        <div class="result-row"><span class="lbl">البند</span><span class="val">${r.band||'—'}</span></div>
+        <div class="result-row"><span class="lbl">الدور</span><span class="val">${r.floor||'—'}</span></div>
+        <div class="result-row"><span class="lbl">تاريخ الطلب</span><span class="val">${r.reqDate||'—'}</span></div>
+        <div class="result-row"><span class="lbl">تاريخ الاستلام</span><span class="val">${r.recvDate||'—'}</span></div>
+        ${r.concrete?`<div class="result-row"><span class="lbl">الكمية</span><span class="val">${r.concrete} م³</span></div>`:''}
+        ${r.notes?`<div class="result-row"><span class="lbl">ملاحظات</span><span class="val">${r.notes}</span></div>`:''}
+        <div class="result-row"><span class="lbl">المستلم</span><span class="val">${r.receiver||'—'}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function onCombo(field){
+  const s=document.getElementById(field+'-select').value;
+  const row=document.getElementById(field+'-custom-row');const hint=document.getElementById(field+'-hint');
+  if(s==='__new__'){if(row){row.style.display='flex';document.getElementById(field+'-custom').focus();}if(hint)hint.classList.add('show');}
+  else{if(row)row.style.display='none';if(hint)hint.classList.remove('show');}
+}
+function cancelCombo(field){document.getElementById(field+'-select').value='';document.getElementById(field+'-custom').value='';const row=document.getElementById(field+'-custom-row');const hint=document.getElementById(field+'-hint');if(row)row.style.display='none';if(hint)hint.classList.remove('show');}
+function getComboValue(field){const s=document.getElementById(field+'-select').value;return s==='__new__'?document.getElementById(field+'-custom').value.trim():s;}
+function onBand(){document.getElementById('band-custom-wrap').style.display=document.getElementById('band-select').value==='بند آخر...'?'block':'none';}
+
+function setStatus(s){
+  sel=s;['A','B','C','D'].forEach(k=>{const b=document.getElementById('btn-'+k);if(b){b.classList.remove('on-A','on-B','on-C','on-D');if(k===s)b.classList.add('on-'+k);}});
+  const ta=document.getElementById('notes'),lbl=document.getElementById('notes-label'),hint=document.getElementById('notes-hint');
+  if(needsNotes.includes(s)){lbl.innerHTML='<span class="req">* </span>ملاحظات (إجبارية)';hint.classList.add('show');if(!ta.value.trim())ta.classList.add('rh');}
+  else{lbl.textContent='ملاحظات';hint.classList.remove('show');ta.classList.remove('rh');}
+}
+function onNotesInput(){const ta=document.getElementById('notes');if(needsNotes.includes(sel)&&ta.value.trim())ta.classList.remove('rh');}
+
+function getData(){
+  const bs=document.getElementById('band-select').value;
+  const band=bs==='بند آخر...'?document.getElementById('band-custom').value:bs;
+  return{type:formType==='1'?'طلب استلام':'إذن صب',zone:getComboValue('zone'),emara:document.getElementById('emara').value,contractor:getComboValue('contractor'),floor:getComboValue('floor'),receiver:document.getElementById('receiver').value,band,reqNum:document.getElementById('req-num').value,revision:document.getElementById('revision').value,reqDate:fmtDate(document.getElementById('req-date').value),recvDate:fmtDate(document.getElementById('recv-date').value),status:formType==='1'?sel:'',statusLabel:formType==='1'?lbs[sel]:'',concrete:formType==='2'?document.getElementById('concrete').value:'',notes:document.getElementById('notes').value,userName:currentUser?(currentUser.displayName||currentUser.email):''};
+}
+
+function validate(d){
+  if(!d.zone)return'اختار أو اكتب ZONE';if(!d.emara)return'ادخل رقم العمارة';if(!d.contractor)return'اختار أو اكتب المقاول';if(!d.band)return'اختار أو اكتب البند';if(!d.reqNum)return'ادخل رقم الطلب';if(!d.reqDate)return'اختار تاريخ الطلب';
+  if(formType==='1'&&!sel)return'اختار الحالة (A/B/C/D) قبل الإضافة';
+  if(formType==='2'&&!d.concrete)return'ادخل كمية الخرسانة';
+  if(formType==='1'&&needsNotes.includes(sel)&&!d.notes.trim()){document.getElementById('notes').classList.add('rh');document.getElementById('notes').scrollIntoView({behavior:'smooth',block:'center'});return'الملاحظات إجبارية عند اختيار هذه الحالة';}
+  return null;
+}
+
+function setLoad(on){document.getElementById('send-btn').classList.toggle('loading',on);document.getElementById('btn-lbl').textContent=on?'جاري الإضافة...':'إضافة في الشيت';document.getElementById('btn-ico').style.display=on?'none':'block';document.getElementById('spinner').style.display=on?'block':'none';}
+
+async function submitForm(){
+  const d=getData();const err=validate(d);
+  document.getElementById('res-ok').style.display='none';document.getElementById('res-err').style.display='none';
+  if(err){document.getElementById('err-txt').textContent=err;document.getElementById('res-err').style.display='flex';window.scrollTo({top:0,behavior:'smooth'});return;}
+  setLoad(true);
+  try{
+    await fetch(WEB_APP_URL+'?'+new URLSearchParams(d).toString(),{method:'GET',mode:'no-cors'});
+    setLoad(false);document.getElementById('res-ok').style.display='flex';window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(()=>{clearForm();document.getElementById('res-ok').style.display='none';},3000);
+  }catch(e){setLoad(false);document.getElementById('err-txt').textContent='فشل الاتصال، تأكد من الانترنت.';document.getElementById('res-err').style.display='flex';window.scrollTo({top:0,behavior:'smooth'});}
+}
+
+function clearForm(){
+  ['emara','receiver','band-custom','req-num','notes','recv-date','zone-custom','contractor-custom','floor-custom','concrete'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['zone-select','contractor-select','floor-select','band-select'].forEach(id=>document.getElementById(id).value='');
+  ['zone','contractor','floor'].forEach(f=>{const row=document.getElementById(f+'-custom-row');const hint=document.getElementById(f+'-hint');if(row)row.style.display='none';if(hint)hint.classList.remove('show');});
+  document.getElementById('revision').value='REV 0';
+  const t=new Date();document.getElementById('req-date').value=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+  document.getElementById('band-custom-wrap').style.display='none';document.getElementById('res-ok').style.display='none';document.getElementById('res-err').style.display='none';document.getElementById('notes').classList.remove('rh');clearStatus();
+}
+
+function clearStatus(){sel='';['A','B','C','D'].forEach(k=>{const b=document.getElementById('btn-'+k);if(b)b.classList.remove('on-A','on-B','on-C','on-D');});const ta=document.getElementById('notes'),lbl=document.getElementById('notes-label'),hint=document.getElementById('notes-hint');if(lbl)lbl.textContent='ملاحظات';if(hint)hint.classList.remove('show');if(ta)ta.classList.remove('rh');}
+
+function applyPrefill(){
+  const q=new URLSearchParams(location.search);
+  const type=q.get('type');if(type!=='1'&&type!=='2')return;
+  goToForm(type);clearStatus();
+  if(!q.get('reqDate')){const rd=document.getElementById('req-date');if(rd)rd.value='';}
+  const setV=(id,v)=>{if(v){const el=document.getElementById(id);if(el)el.value=v;}};
+  const hasOpt=(s,v)=>[...s.options].some(o=>(o.value||o.text)===v&&o.value!=='__new__'&&o.value!=='');
+  const setCombo=(f,v)=>{if(!v)return;const s=document.getElementById(f+'-select');if(!s)return;
+    if(hasOpt(s,v)){s.value=v;onCombo(f);}
+    else{s.value='__new__';onCombo(f);const c=document.getElementById(f+'-custom');if(c)c.value=v;}};
+  const setBand=v=>{if(!v)return;const s=document.getElementById('band-select');if(!s)return;
+    if(hasOpt(s,v)){s.value=v;}else{s.value='بند آخر...';}
+    onBand();if(s.value==='بند آخر...'){const c=document.getElementById('band-custom');if(c)c.value=v;}};
+  setV('req-num',q.get('reqNum'));
+  setV('revision',q.get('revision'));
+  setV('req-date',q.get('reqDate'));
+  setCombo('zone',q.get('zone'));
+  setCombo('contractor',q.get('contractor'));
+  setV('emara',q.get('emara'));
+  setCombo('floor',q.get('floor'));
+  setBand(q.get('band'));
+  setV('receiver',q.get('receiver'));
+  setV('recv-date',q.get('recvDate'));
+  setV('concrete',q.get('concrete'));
+  setV('notes',q.get('notes'));
+}
+if(document.readyState==='loading'){window.addEventListener('DOMContentLoaded',applyPrefill);}else{applyPrefill();}
+
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
+</script>
+</body>
+</html>
